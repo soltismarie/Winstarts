@@ -1,0 +1,23 @@
+from tensorflow.keras.datasets import mnist
+
+# Load MNIST
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+
+# Flatten for RF and NN
+X_train_flat = x_train.reshape(x_train.shape[0], -1)
+X_test_flat = x_test.reshape(x_test.shape[0], -1)
+
+# 1. Random Forest
+clf_rf = MnistClassifier(algorithm="rf")
+clf_rf.train(X_train_flat, y_train)
+print("RF accuracy:", clf_rf.evaluate(X_test_flat, y_test))
+
+# 2. Neural Network
+clf_nn = MnistClassifier(algorithm="nn")
+clf_nn.train(X_train_flat, y_train)
+print("NN accuracy:", clf_nn.evaluate(X_test_flat, y_test))
+
+# 3. CNN
+clf_cnn = MnistClassifier(algorithm="cnn")
+clf_cnn.train(x_train, y_train)  # CNN uses image shape
+print("CNN accuracy:", clf_cnn.evaluate(x_test, y_test))
